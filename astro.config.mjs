@@ -9,7 +9,7 @@ import { SITE_URL } from "./src/consts";
 
 // https://astro.build/config
 export default defineConfig({
-  site: khchtr.github.io,
+  site: 'https://khchtr.github.io',
   integrations: [mdx(), sitemap(), tailwind()],
   markdown: {
     shikiConfig: {
