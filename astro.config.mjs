@@ -3,14 +3,13 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 
 import sitemap from "@astrojs/sitemap";
-
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import { SITE_URL } from "./src/consts";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://khchtr.github.io',
-  integrations: [mdx(), sitemap(), tailwind()],
+  site: SITE_URL,
+  integrations: [mdx(), sitemap()],
   markdown: {
     shikiConfig: {
       themes: {
@@ -18,5 +17,10 @@ export default defineConfig({
         dark: "catppuccin-mocha",
       },
     },
+  },
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
   },
 });
