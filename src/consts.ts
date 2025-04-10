@@ -3,6 +3,6 @@
 
 export const SITE_URL = "https://khchtr.github.io";
 export const SITE_TITLE = "Gagik's blog";
-// export const SITE_DESCRIPTION = "Miniblog is an opinionated and extremely minimal blogging template built with Astro and Tailwind CSS.";
+export const SITE_DESCRIPTION = "Rumblings about life and whatnot.";
 
 // export const EMAIL = "";
