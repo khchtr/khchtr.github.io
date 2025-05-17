@@ -1,85 +1,20 @@
 ---
-title: "Markdown Style Guide"
-description: "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."
-date: "Nov 07 2024"
+title: "(First) Birthday Post"
+description: "First Post on this new blog."
+date: "May 17 2025"
 ---
 
-# H1
 
-## H2
+## Armenian Birthday Patterns
 
-### H3
+I'm hoping this is the first of many posts, so I'll start with something simple. A couple years back, I came across a chart on [r/dataisbeautiful](https://old.reddit.com/r/dataisbeautiful) about [birthday distribution in US](https://old.reddit.com/r/dataisbeautiful/comments/13ro2fw/oc_how_common_in_your_birthday/). This inspired me to create a similar visualization for Armenia. 
 
-#### H4
+Before each election in Armenia, the relevant government bodies publish the lists of eligible voters. I used the data for the most recent Parliamentary elections of 2021 (these are general elections, so data is available across the country). I used Pandas to load all the data from multiple excle files into a single dataframe, clean and process it, and then plot the distribution as a heatmap using Seaborn. Finally, I used Illustrator to refine it.
 
-##### H5
+![Birthday distribution in Armenia](/static/bd_distribution.svg)
 
-###### H6
+Several interesting patterns emerge from the chart. We can see that there is a below-average birthday distribution between March and June, as well as in November and December. At the same time, there's a noticeable spike in birthdays on the 1st, 10th, 15th, and 20th of each month, as well as on Soviet holidays (Victory Day, International Woman's Day). I suspect these unusual spikes can be attributed to the Soviet period, where either individuals or those responsible for registration may have preferred to shift actual birth dates to more "memorable" ones.
 
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
+## Going Interactive
 
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
-
-![blog placeholder](/static/blog-placeholder.png)
-
-<video controls>
-  <source src="/static/dynamic-island-animation.mp4" type="video/mp4">
-</video>
-
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
-> **Note** that you can use _Markdown syntax_ within a blockquote.
-
-| Italics   | Bold     | Code   |
-| --------- | -------- | ------ |
-| _italics_ | **bold** | `code` |
-
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
-</html>
-```
-
-1. First item
-2. Second item
-3. Third item
-
-Hello world!
-
-- List item
-- Another item
-  - List item
-  - Another item
-  - And another item
-- And another item
-  - List item
-  - Another item
-  - And another item
-
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
-
-H<sub>2</sub>O
-
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
-
-<component>
-<div id="map"></div>
-<script>
-    var map = new maplibregl.Map({
-        container: 'map', // container id
-        style: 'https://demotiles.maplibre.org/style.json', // style URL
-        center: [0, 0], // starting position [lng, lat]
-        zoom: 1 // starting zoom
-    });
-</script>
-</component>
+These weird spikes have got me curious about how the birthday distribution changes between the pre- and post-Soviet eras and whether any correlation exists. I want to develop an interactive chart that will allow to explore the distribution across different years. This is currently a work in progress (so much new to learn), so stay tuned for the next update!
