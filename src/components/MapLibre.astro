@@ -38,7 +38,7 @@ const { latitude, longitude, zoom, mapstyle, container, interactive, containerst
 
       var map = new maplibregl.Map({
         container: this.dataset.container,
-        interactive: JSON.parse(this.dataset.interactive),
+        interactive: JSON.parse(this.dataset.interactive!),
         center: [this.dataset.longitude, this.dataset.latitude],
         zoom: this.dataset.zoom,
         style: this.dataset.mapstyle
