@@ -4,7 +4,9 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
 import { formatDate } from "../../lib/utils";
 
-const collection = await getCollection("posts");
+const collection = await getCollection("posts", ({ data }) => {
+     return import.meta.env.PROD ? data.draft !== true : true;
+  });
 const posts = collection.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
