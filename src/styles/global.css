@@ -58,7 +58,7 @@
 @layer components {
   article {
     p {
-      @apply my-4 leading-relaxed;
+      @apply my-4 leading-normal;
     }
     h1 {
       @apply my-4 text-xl font-medium dark:text-white;
