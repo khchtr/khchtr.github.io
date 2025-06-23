@@ -1,89 +1,110 @@
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz_container">
-<div id="my_dataviz"></div>
-<div id="slider-range"></div>
+  <div id="my_dataviz"></div>
+  <div id="slider-range"></div>
 </div>
 
 <!-- Load d3.js -->
 <script is:inline src="https://d3js.org/d3.v7.min.js"></script>
 <script is:inline src="https://unpkg.com/d3-simple-slider"></script>
-
-<script >
-// @ts-ignore
-declare const d3: any;
-
-/**
- * @param {any} d
- */
-function convertRow(d: any) {
-  return {
-    year: parseInt(d.year),
-    month: parseInt(d.month),
-    day: parseInt(d.day),
-    births: parseInt(d.births),
-    //weekday: parseInt(d.weekday),
+<style>
+  #my_dataviz_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Corrected background-color */
+    background-color: #fff;
+    border-radius: 12px; /* Rounded corners for the container */
+    width: 100%; /* Make it fluid */
+    max-width: 600px; /* Max width for desktop */
   }
-};
 
-/**
- * @param {Array<{year:number, month:number, day:number, births:number}>} data
- * @param {number} [startYear]
- * @param {number} [endYear]
- */
-function groupBirths(
-  data: Array<{year: number, month: number, day: number, births: number}>,
-  startYear = 1907,
-  endYear = 2003
-) {
-  // 1. First, filter the data by the specified year range
-  const filteredData = data.filter((record: {year:number}) => {
-    return record.year >= startYear && record.year <= endYear;
-  });
+  /* SVG element styling */
+  #my_dataviz svg {
+    display: block; /* Remove extra space below SVG */
+    margin: 0 auto; /* Center SVG within its div */
+  }
+</style>
+<script>
+  // @ts-ignore
+  declare const d3: any;
 
-  // 2. Now, apply the grouping logic to the filtered data
-  /** @type {Record<string, {month:number, day:number, births:number}>} */
-  const groupedData: { [key: string]: { month: number, day: number, births: number } } = {};
-  filteredData.forEach((record: {month:number, day:number, births:number}) => {
-    const key = `${record.month}-${record.day}`;
-    if (!groupedData[key]) {
-      groupedData[key] = {
-        month: record.month,
-        day: record.day,
-        births: 0
-      };
-    }
-    groupedData[key].births += record.births;
-  });
-  // 3. Convert the groupedData object back into a sorted array of objects
-  const result = Object.values(groupedData);
-  result.sort((a: {month:number, day:number}, b: {month:number, day:number}) => {
-    if (a.month !== b.month) {
-      return a.month - b.month;
-    }
-    return a.day - b.day;
-  });
-  return result;
-};
+  /**
+   * @param {any} d
+   */
+  function convertRow(d: any) {
+    return {
+      year: parseInt(d.year),
+      month: parseInt(d.month),
+      day: parseInt(d.day),
+      births: parseInt(d.births),
+      //weekday: parseInt(d.weekday),
+    };
+  }
 
-// set the dimensions and margins of the graph
-const margin = {top: 80, right: 25, bottom: 30, left: 40},
-  width = 500 - margin.left - margin.right,
-  height = 800 - margin.top - margin.bottom;
+  /**
+   * @param {Array<{year:number, month:number, day:number, births:number}>} data
+   * @param {number} [startYear]
+   * @param {number} [endYear]
+   */
+  function groupBirths(
+    data: Array<{ year: number; month: number; day: number; births: number }>,
+    startYear = 1907,
+    endYear = 2003,
+  ) {
+    // 1. First, filter the data by the specified year range
+    const filteredData = data.filter((record: { year: number }) => {
+      return record.year >= startYear && record.year <= endYear;
+    });
 
-// append the svg object to the body of the page
-// @ts-ignore
-var svg = d3.select("#my_dataviz")
-.append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-.append("g")
-  .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+    // 2. Now, apply the grouping logic to the filtered data
+    /** @type {Record<string, {month:number, day:number, births:number}>} */
+    const groupedData: {
+      [key: string]: { month: number; day: number; births: number };
+    } = {};
+    filteredData.forEach(
+      (record: { month: number; day: number; births: number }) => {
+        const key = `${record.month}-${record.day}`;
+        if (!groupedData[key]) {
+          groupedData[key] = {
+            month: record.month,
+            day: record.day,
+            births: 0,
+          };
+        }
+        groupedData[key].births += record.births;
+      },
+    );
+    // 3. Convert the groupedData object back into a sorted array of objects
+    const result = Object.values(groupedData);
+    result.sort(
+      (
+        a: { month: number; day: number },
+        b: { month: number; day: number },
+      ) => {
+        if (a.month !== b.month) {
+          return a.month - b.month;
+        }
+        return a.day - b.day;
+      },
+    );
+    return result;
+  }
 
-//Read the data
-// @ts-ignore
-d3.csv("https://raw.githubusercontent.com/khchtr/OpenData/refs/heads/main/Demographics/birthdays.csv", convertRow).then(function(source_data) {
-  let data= groupBirths(source_data)
+  // set the dimensions and margins of the graph
+  const margin = { top: 80, right: 25, bottom: 30, left: 40 },
+    width = 500 - margin.left - margin.right,
+    height = 800 - margin.top - margin.bottom;
+
+  // append the svg object to the body of the page
+  // @ts-ignore
+  var svg = d3
+    .select("#my_dataviz")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
   // Labels of row and columns -> unique identifier of the column called 'group' and 'variable'
   //const months = Array.from(new Set(data.map(d => d.month)))
@@ -91,161 +112,193 @@ d3.csv("https://raw.githubusercontent.com/khchtr/OpenData/refs/heads/main/Demogr
 
   // Build X scales and axis:
   // @ts-ignore
-  const x = d3.scaleBand()
-    .range([ 0, width ])
+  const x = d3
+    .scaleBand()
+    .range([0, width])
     .domain(Array.from({ length: 12 }, (_, i) => i + 1))
     .padding(0.05);
 
- // @ts-ignore
- const xAxis = svg.append("g")
-    .style("font-size", 15)
+  // @ts-ignore
+  const xAxis = svg
+    .append("g")
+    .style("font-size", "15px")
+    .style("fill", "red")
+    .attr("class", "axis")
     .attr("transform", "translate(0,-5)")
     .call(
       // @ts-ignore
-      d3.axisTop(x).tickSize(0).tickFormat((d: number) => { // Changed to axisTop
-            const date = new Date(2000, d - 1, 1); // Use a dummy date to get month name
-            // @ts-ignore
-            return d3.timeFormat("%b")(date); // Format to abbreviated month name (e.g., "Jan")
-        }))
-    .select(".domain").remove();
+      d3
+        .axisTop(x)
+        .tickSize(0)
+        .tickFormat((d: number) => {
+          // Changed to axisTop
+          const date = new Date(2000, d - 1, 1); // Use a dummy date to get month name
+          // @ts-ignore
+          return d3.timeFormat("%b")(date); // Format to abbreviated month name (e.g., "Jan")
+        }),
+    );
+  xAxis.select(".domain").remove();
 
   // Build Y scales and axis:
   // @ts-ignore
-  const y = d3.scaleBand()
-    .range([ height, 0 ])
+  const y = d3
+    .scaleBand()
+    .range([height, 0])
     .domain(Array.from({ length: 31 }, (_, i) => 31 - i))
     .padding(0.05);
 
- // @ts-ignore
- const yAxis = svg.append("g")
-    .style("font-size", 15)
+  // @ts-ignore
+  const yAxis = svg
+    .append("g")
+    .style("font-size", "15px")
+    .style("fill", "red")
+    .attr("transform", "translate(-5,0)")
     .call(
       // @ts-ignore
-      d3.axisLeft(y).tickSize(0))
-    .select(".domain").remove();
+      d3.axisLeft(y).tickSize(0),
+    );
+  yAxis.select(".domain").remove();
 
-  // Build color scale
-  //var myColor = d3.scaleSequential()
-  //  .interpolator(d3.interpolateRdBu)
-  //  .domain([1,30000])
-// @ts-ignore
-let color = d3.scaleDiverging([d3.min(data, (d: any) => d.births), 0, d3.max(data, (d: any) => d.births)], d3.interpolateSpectral)
-// @ts-ignore
-let myColor = d3.scaleLinear()
-  .domain([28000, 6900, 1500])
-  .range(['red', '#fff', 'blue']);
-
-  // add the squares
+  // d3.min(data, (d: any) => d.births)
   // @ts-ignore
-  svg.selectAll()
-    .data(data, function(d: any) {return d.month+':'+d.day;})
-    .join("rect")
-      .attr("x", function(d: any) { return x(d.month) })
-      .attr("y", function(d: any) { return y(d.day) })
+  let myColor = d3.scaleDiverging().range(["blue", "white", "red"]);
+  // @ts-ignore
+
+  // Add title to graph
+  svg
+    .append("text")
+    .attr("x", 0)
+    .attr("y", -30)
+    .attr("class", "chart-title")
+    .attr("text-anchor", "left")
+    .text("Number of births in Armenia (thousands)");
+
+  function drawChart(
+    sourceData: Array<{
+      year: number;
+      month: number;
+      day: number;
+      births: number;
+    }>,
+    startYear: number,
+    endYear: number,
+  ) {
+    // Group and filter data based on the current year range
+    const data = groupBirths(sourceData, startYear, endYear);
+
+    // Calculate min and max births from the currently filtered data for color scale domain
+    const minBirths = d3.min(data, (d: { births: number }) => d.births);
+    const maxBirths = d3.max(data, (d: { births: number }) => d.births);
+    const meanBirths = d3.mean(data, (d: { births: number }) => d.births);
+
+    myColor.domain([minBirths, meanBirths, maxBirths]);
+
+    // --- D3 Data Join for Rectangles (Heatmap Cells) ---
+    const rects = svg
+      .selectAll("rect")
+      .data(data, (d: { month: number; day: number }) => `${d.month}:${d.day}`); // Key function for stable data binding
+
+    // Exit: Remove old elements that no longer have corresponding data
+    rects.exit().transition().style("opacity", 0).remove();
+
+    // Enter + Update: Create new elements for new data points and update existing ones
+    const mergedRects = rects
+      .enter()
+      .append("rect")
+      .attr("x", function (d: { month: number }) {
+        return x(d.month);
+      })
+      .attr("y", function (d: { day: number }) {
+        return y(d.day);
+      })
       .attr("rx", 0)
       .attr("ry", 0)
-      .attr("width", x.bandwidth() )
-      .attr("height", y.bandwidth() )
-      .style("fill", (d: any) => myColor(d.births))
-      .style("stroke-width", 4)
+      .attr("width", x.bandwidth())
+      .attr("height", y.bandwidth())
+      .style("stroke-width", 0)
       .style("stroke", "none")
-      .style("opacity", 0.8)
+      .style("opacity", 0) // Start new elements with 0 opacity
+      .merge(rects) // Merge the enter and update selections
+      .transition() // Apply transition to all (new and existing)
+      .style("opacity", 0.8) // Fade in or maintain opacity
+      .style("fill", (d: { births: number }) => myColor(d.births));
 
-    
-  // @ts-ignore
-  var cell = svg.selectAll(".label")
-    .data(data)
-    .enter()
-    .append("g")
-    .attr("class", "label")
+    // --- D3 Data Join for Text Labels (Birth Counts) ---
+    const texts = svg
+      .selectAll(".birth-label")
+      .data(data, (d: { month: number; day: number }) => `${d.month}:${d.day}`);
 
-  cell
-    .append("text")
-    .attr("x", (d: any) => x(d.month))
-    .attr("y", (d: any) => y(d.day))
-    .attr("dx", x.bandwidth()/2)
-    .attr("dy", y.bandwidth()/2)
-    .attr("text-anchor", "middle")
-    .style("font-size", "16px")
-    .style("fill", "black")
-    .style('dominant-baseline', 'middle')
-    .text((d: any) => Math.round(d.births/1000 * 10) / 10);
+    // Exit: Remove old text labels
+    texts.exit().transition().style("opacity", 0).remove();
 
-  cell
-    .append("title")
-      .text((d: any) => `${d.births.toLocaleString("en")} births`)
+    // Enter + Update: Create new text labels and update existing ones
+    texts
+      .enter()
+      .append("text")
+      .attr("class", "birth-label")
+      .attr("x", (d: { month: number }) => x(d.month) + x.bandwidth() / 2) // Center text in cell
+      .attr("y", (d: { day: number }) => y(d.day) + y.bandwidth() / 2)
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("fill", "black")
+      .style("dominant-baseline", "middle")
+      .style("opacity", 0) // Start new elements with 0 opacity
+      .merge(texts) // Merge enter and update selections
+      .transition() // Apply transition
+      .style("opacity", 1) // Fade in or maintain opacity
+      .text((d: { births: number }) => (d.births / 1000).toFixed(1));
+  }
 
-
-  // Define the slider
-
-  let min = 1907;
-  let max = 2003;
-  // @ts-ignore
-  var sliderRange = d3
-    .sliderBottom()
-    .min(min)
-    .max(max)
-    .width(300)
-    .step(1)
-    .ticks(0)
-    .default([min, max])
-    .fill('#212529')
-    .displayFormat(d3.format('.0f'))
-    .tickFormat(d3.format('.0f'))
-    //d3.select('p#value-range').text(val.map(d3.format('.2%')).join('-'))
-    //To be changed Filter data based on slider values
-    // const filteredData = data.filter(d => d.Date >= val[0] && d.Date <= val[1]);
-
-
-  sliderRange.on('onchange', (val: [number, number])=> {
-    let data_new = groupBirths(source_data,val[0], val[1])
-    // @ts-ignore
-    let min = d3.min(data_new, (d: any) => d.births)
-    // @ts-ignore
-    let max = d3.max(data_new, (d: any) => d.births)
-
-    myColor
-    .domain([max,(min+max)/2, min])
-    
-    // @ts-ignore
-    svg.selectAll("rect")
-    .data(data_new, function(d: any) {return d.month+':'+d.day;})
-    .style("fill", function(d: any) { return myColor(d.births)}
+  d3.csv(
+    "https://raw.githubusercontent.com/khchtr/OpenData/refs/heads/main/Demographics/birthdays.csv",
+    convertRow,
   )
+    .then(function (
+      sourceData: Array<{
+        year: number;
+        month: number;
+        day: number;
+        births: number;
+      }>,
+    ) {
+      // Determine the initial min and max years from the full dataset
+      const initialMinYear = 1907;
+      const initialMaxYear = 2003;
 
-    // @ts-ignore
-    var cell = svg.selectAll(".label")
-    .data(data_new)
+      // Draw the chart initially with the full available year range
+      drawChart(sourceData, initialMinYear, initialMaxYear);
 
-    cell.select("text")
-    .text((d: any) => Math.round(d.births/1000 * 10) / 10)
+      // Define the D3 Simple Slider for year range selection
+      const sliderRange = d3
+        .sliderBottom()
+        .min(initialMinYear)
+        .max(initialMaxYear)
+        .width(300)
+        .step(1)
+        .ticks(5)
+        .default([initialMinYear, initialMaxYear])
+        .fill("#5148ff")
+        .displayFormat(d3.format(".0f"))
+        .tickFormat(d3.format(".0f"))
+        .on("onchange", (val: [number, number]) => {
+          // When slider value changes, redraw the chart with the new year range
+          drawChart(sourceData, val[0], val[1]);
+        });
 
-    cell.select("title")
-    .text((d: any) => `${d.births.toLocaleString("en")} births`)
-    
-  });
+      // Add the slider to the DOM
+      // @ts-ignore
+      var gRange = d3
+        .select("div#slider-range")
+        .append("svg")
+        .attr("width", 500)
+        .attr("height", 100)
+        .append("g")
+        .attr("transform", "translate(90,10)");
 
-
-  // Add the slider to the DOM
-  // @ts-ignore
-  var gRange = d3
-    .select('div#slider-range')
-    .append('svg')
-    .attr('width', 500)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(90,10)');
-
-  gRange.call(sliderRange);
-
-
-// Add title to graph
-svg.append("text")
-        .attr("x", 0)
-        .attr("y", -30)
-        .attr("text-anchor", "left")
-        .style("font-size", "18px")
-        .text("Number of births in Armenia (in thousands)");
-
-});
+      gRange.call(sliderRange);
+    })
+    .catch(function (error: unknown) {
+      // Log any errors that occur during data loading or parsing
+      console.error("Error loading or parsing data:", error);
+    });
 </script>
