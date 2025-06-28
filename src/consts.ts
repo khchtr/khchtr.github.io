@@ -5,4 +5,4 @@ export const SITE_URL = "https://khchtr.github.io";
 export const SITE_TITLE = "Gagik's blog";
 export const SITE_DESCRIPTION = "Rumblings about life and whatnot.";
 
-// export const EMAIL = "";
+// export const EMAIL = "mailto:radio@gagik.space";
