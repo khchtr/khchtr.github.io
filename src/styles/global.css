@@ -3,8 +3,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: Geist, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: Geist Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans: "Noto Sans Armenian", "Geist", system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 @layer base {
@@ -25,7 +25,7 @@
     font-style: normal;
     font-stretch: 100%;
     font-weight: 100 900;
-    src: url("/fonts/noto-sans.woff2") format("woff2");
+    src: url("/fonts/noto-sans-var.woff2") format("woff2");
     font-display: swap;
   }
   @font-face {
@@ -33,7 +33,7 @@
     font-style: normal;
     font-stretch: 100%;
     font-weight: 100 900;
-    src: url("/fonts/noto-sans-mono.woff2") format("woff2");
+    src: url("/fonts/noto-mono-var.woff2") format("woff2");
     font-display: swap;
   }
   @font-face {
@@ -42,7 +42,7 @@
     font-weight: 100 900;
     font-stretch: 100%;
     font-display: swap;
-    src: url("/fonts/noto-sans.woff2") format('woff2');
+    src: url("/fonts/noto-sans-arm-var.woff2") format('woff2');
     unicode-range: U+0308, U+0530-058F, U+2010, U+2024, U+25CC, U+FB13-FB17;
   }
   html.dark .astro-code,

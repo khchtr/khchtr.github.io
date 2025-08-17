@@ -1,9 +1,9 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import Header from "../components/Header.astro";
+import { SITE_TITLE } from "../consts";
 import { cn } from "../lib/utils";
 import "../styles/global.css";
-import { SITE_TITLE } from "../consts";
 
 interface Props {
   title: string;
@@ -29,24 +29,28 @@ const {
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href={new URL("rss.xml", Astro.site)} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={SITE_TITLE}
+      href={new URL("rss.xml", Astro.site)}
+    />
 
     <!-- Font preloads -->
     <link
-      rel="preload"
+      rel="prefetch"
       href="/fonts/geist-variable.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
-      rel="preload"
+      rel="prefetch"
       href="/fonts/geist-mono-variable.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
-
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
