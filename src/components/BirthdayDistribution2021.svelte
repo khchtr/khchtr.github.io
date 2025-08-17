@@ -1,4 +1,3 @@
-
 <div id="my_dataviz_container">
   <div bind:this={vizEl}></div>
   <div bind:this={sliderEl}></div>
@@ -25,7 +24,7 @@
 
 <script>
   import * as d3 from 'd3';
-  import { sliderBottom } from 'd3-simple-slider';
+  import * as slider from 'd3-simple-slider';
 
   // Svelte 5: Bind to the container elements directly
   let vizEl;
@@ -219,8 +218,7 @@
 
         drawChart(sourceData, initialMinYear, initialMaxYear);
 
-        const sliderRange = d3
-          .sliderBottom()
+        const sliderRange = slider.sliderBottom()
           .min(initialMinYear)
           .max(initialMaxYear)
           .width(300)
