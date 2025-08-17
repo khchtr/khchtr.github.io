@@ -3,6 +3,6 @@
 
 export const SITE_URL = "https://khchtr.github.io";
 export const SITE_TITLE = "Gagik";
-export const SITE_DESCRIPTION = "Rumblings about life and whatnot";
+export const SITE_DESCRIPTION = "Ramblings about life and whatnot";
 
 export const EMAIL = "radio@gagik.space";

@@ -7,7 +7,7 @@ date: "May 17 2025"
 
 ## Armenian Birthday Patterns
 
-I'm hoping this is the first of many posts, so I'll start with something simple. A couple years back, I came across a chart on [r/dataisbeautiful](https://old.reddit.com/r/dataisbeautiful) about [birthday distribution in US](https://old.reddit.com/r/dataisbeautiful/comments/13ro2fw/oc_how_common_in_your_birthday/). This inspired me to create a similar visualization for Armenia. 
+I'm hoping this is the first of many posts, so I'll start with something simple. A couple years back, I came across a chart on [r/dataisbeautiful](https://old.reddit.com/r/dataisbeautiful) about [birthday distribution in US](https://old.reddit.com/r/dataisbeautiful/comments/13ro2fw/oc_how_common_in_your_birthday/). This inspired me to create a similar visualization for Armenia.
 
 Before each election in Armenia, the relevant government bodies publish the lists of eligible voters. I used the data for the most recent Parliamentary elections of 2021 (these are general elections, so data is available across the country). I used Pandas to load all the data from multiple excle files into a single dataframe, clean and process it, and then plot the distribution as a heatmap using Seaborn. Finally, I used Illustrator to refine it.
 
