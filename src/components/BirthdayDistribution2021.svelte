@@ -9,16 +9,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 20px;
     background-color: #fff;
-    border-radius: 12px; /* Rounded corners for the container */
-    width: 100%; /* Make it fluid */
-    max-width: 600px; /* Max width for desktop */
+    border-radius: 12px;
+    max-inline-size: 600px;
+    inline-size: 100%;
   }
 
   /* SVG element styling */
   :global(#my_dataviz_container svg) {
-    display: block; /* Remove extra space below SVG */
-    margin: 0 auto; /* Center SVG within its div */
+    display: block;
+    margin: 0 auto;
+    padding: 0;
   }
 </style>
 
@@ -26,11 +28,9 @@
   import * as d3 from 'd3';
   import * as slider from 'd3-simple-slider';
 
-  // Svelte 5: Bind to the container elements directly
   let vizEl;
   let sliderEl;
 
-  // --- Data Processing Functions ---
   function convertRow(d) {
     return {
       year: parseInt(d.year),
@@ -68,25 +68,24 @@
     return result;
   }
 
-  // Svelte 5: Use $effect to interact with the DOM after it's mounted
   $effect(() => {
-    // Ensure the elements are available before running D3 code
     if (!vizEl || !sliderEl) return;
 
-    // Clear previous renders if the effect re-runs
     vizEl.innerHTML = '';
     sliderEl.innerHTML = '';
 
     // --- D3 Setup ---
-    const margin = { top: 80, right: 25, bottom: 30, left: 40 };
+    const margin = { top: 75, right: 25, bottom: 25, left: 25 };
+    const parentWidth = my_dataviz_container.offsetWidth;
     const width = 500 - margin.left - margin.right;
-    const height = 800 - margin.top - margin.bottom;
+    const height = 1000 - margin.top - margin.bottom;
 
     const svg = d3
       .select(vizEl)
       .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("width", parentWidth-10 ) // Make it responsive 
+      .attr("height", 800)
+       // Set viewBox for scaling
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -100,7 +99,7 @@
     const xAxis = svg
       .append("g")
       .style("font-size", "15px")
-      .style("fill", "red")
+      .style("color", "black")
       .attr("class", "axis")
       .attr("transform", "translate(0,-5)")
       .call(
@@ -123,9 +122,9 @@
     const yAxis = svg
       .append("g")
       .style("font-size", "15px")
-      .style("fill", "red")
+      .style("color", "black")
       .attr("transform", "translate(-5,0)")
-      .call(d3.axisLeft(y).tickSize(0));
+      .call(d3.axisLeft(y).tickSize(0).tickFormat(d3.format("d")));
     yAxis.select(".domain").remove();
 
     const myColor = d3.scaleDiverging().range(["blue", "white", "red"]);
@@ -138,7 +137,6 @@
       .attr("text-anchor", "left")
       .text("Number of births in Armenia (thousands)");
 
-    // --- Drawing Function ---
     function drawChart(sourceData, startYear, endYear) {
       const data = groupBirths(sourceData, startYear, endYear);
 
@@ -148,7 +146,6 @@
 
       myColor.domain([minBirths, meanBirths, maxBirths]);
 
-      // Rectangles
       svg
         .selectAll("rect")
         .data(data, (d) => `${d.month}:${d.day}`)
@@ -181,7 +178,6 @@
           (exit) => exit.transition().style("opacity", 0).remove(),
         );
 
-      // Text Labels
       svg
         .selectAll(".birth-label")
         .data(data, (d) => `${d.month}:${d.day}`)
@@ -207,7 +203,6 @@
         );
     }
 
-    // --- Data Loading and Initial Render ---
     d3.csv(
       "https://raw.githubusercontent.com/khchtr/OpenData/refs/heads/main/Demographics/birthdays.csv",
       convertRow,
@@ -221,7 +216,7 @@
         const sliderRange = slider.sliderBottom()
           .min(initialMinYear)
           .max(initialMaxYear)
-          .width(300)
+          .width(parentWidth-300) // Scale slider width
           .step(1)
           .ticks(5)
           .default([initialMinYear, initialMaxYear])
@@ -235,10 +230,10 @@
         const gRange = d3
           .select(sliderEl)
           .append("svg")
-          .attr("width", 500)
+          .attr("width", "100%")
           .attr("height", 100)
           .append("g")
-          .attr("transform", "translate(90,10)");
+          .attr("transform", "translate(20,30)")
 
         gRange.call(sliderRange);
       })
@@ -246,7 +241,6 @@
         console.error("Error loading or parsing data:", error);
       });
 
-    // Svelte 5: Cleanup function for the effect
     return () => {
       vizEl.innerHTML = '';
       sliderEl.innerHTML = '';
