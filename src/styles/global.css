@@ -111,5 +111,8 @@
     mark {
       @apply dark:bg-yellow-500/50 dark:text-white;
     }
+    .footnotes p {
+      display: inline;
+    }
   }
 }
