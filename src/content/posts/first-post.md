@@ -2,6 +2,7 @@
 title: "(First) Birthday Post"
 description: "First Post on this new blog."
 date: "May 17 2025"
+language: en
 ---
 
 

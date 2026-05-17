@@ -5,10 +5,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 export async function GET(context) {
   const posts = await getCollection("posts", ({ data }) => {
-  return data.draft !== true;
+  return data.draft !== true && data.language === "hy";
 });
   return rss({
-    title: `${SITE_TITLE}`,
+    title: `${SITE_TITLE} (Հայերեն)`,
     description: SITE_DESCRIPTION,
     site: context.site,
     trailingSlash: false,

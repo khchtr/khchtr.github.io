@@ -10,26 +10,56 @@ const collection = await getCollection("posts", ({ data }) => {
 const posts = collection.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+
+const enPosts = posts.filter((p) => p.data.language === "en");
+const hyPosts = posts.filter((p) => p.data.language === "hy");
 ---
 
 <Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <main>
-    <ul class="flex flex-col gap-1.5">
-      {
-        posts.map((post) => (
-          <li>
-            <a
-              href={`/posts/${post.id}`}
-              class="group flex justify-between gap-3"
-            >
-              <span class="group-hover:underline">{post.data.title}</span>
-              <span class="text-nowrap text-zinc-500">
-                {formatDate(post.data.date)}
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      enPosts.length > 0 && (
+        <section class="mb-8">
+          <h2 class="mb-3 text-lg font-medium">english</h2>
+          <ul class="flex flex-col gap-1.5">
+            {enPosts.map((post) => (
+              <li>
+                <a
+                  href={`/posts/${post.id}`}
+                  class="group flex justify-between gap-3"
+                >
+                  <span class="group-hover:underline">{post.data.title}</span>
+                  <span class="text-nowrap text-zinc-500">
+                    {formatDate(post.data.date)}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+    {
+      hyPosts.length > 0 && (
+        <section>
+          <h2 class="mb-3 text-lg font-medium">armenian</h2>
+          <ul class="flex flex-col gap-1.5">
+            {hyPosts.map((post) => (
+              <li>
+                <a
+                  href={`/posts/${post.id}`}
+                  class="group flex justify-between gap-3"
+                >
+                  <span class="group-hover:underline">{post.data.title}</span>
+                  <span class="text-nowrap text-zinc-500">
+                    {formatDate(post.data.date)}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
   </main>
 </Layout>
