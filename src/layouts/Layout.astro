@@ -32,8 +32,20 @@ const {
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={SITE_TITLE}
+      title="All Posts"
       href={new URL("rss.xml", Astro.site)}
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="English Posts"
+      href={new URL("rss-en.xml", Astro.site)}
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Armenian Posts"
+      href={new URL("rss-hy.xml", Astro.site)}
     />
 
     <!-- Font preloads -->

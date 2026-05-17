@@ -8,7 +8,7 @@ export async function GET(context) {
   return data.draft !== true;
 });
   return rss({
-    title: `${SITE_TITLE}`,
+    title: `${SITE_TITLE} (All Posts)`,
     description: SITE_DESCRIPTION,
     site: context.site,
     trailingSlash: false,
