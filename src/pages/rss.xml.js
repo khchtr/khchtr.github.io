@@ -14,7 +14,7 @@ export async function GET(context) {
     trailingSlash: false,
     items: posts.map((post) => ({
       ...post.data,
-      link: `/posts/${post.slug}/`,
+      link: `/posts/${post.id}/`,
     })),
   });
 }
